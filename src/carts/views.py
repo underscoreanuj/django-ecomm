@@ -33,6 +33,7 @@ def cart_home(request):
 
     return render(request, "carts/home.html", {"cart": cart_obj})
 
+
 def cart_update(request):
     product_id = request.POST.get('product_id')
 
@@ -63,6 +64,7 @@ def cart_update(request):
             return JsonResponse(json_data)
 
     return redirect('cart:home')
+
 
 def checkout_home(request):
     cart_obj, create_bool = Cart.objects.new_or_get(request)
