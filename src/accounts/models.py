@@ -10,6 +10,7 @@ class User(AbstractBaseUser):
     active          = models.BooleanField(default=True)                  # can login
     staff           = models.BooleanField(default=False)                 # non-superuser
     admin           = models.BooleanField(default=False)                 # superuser
+    timestamp       = models.DateTimeField(auto_now_add=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
