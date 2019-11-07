@@ -32,7 +32,7 @@ class UserManager(BaseUserManager):
 
         return user_obj
 
-    def create_super_user(self, email, password=None):
+    def create_superuser(self, email, password=None):
         user_obj = self.create_user(
             email,
             password=password,
@@ -65,6 +65,14 @@ class User(AbstractBaseUser):
 
     def get_short_name(self):
         return self.email
+
+    @staticmethod
+    def has_perm(perm, obj=None):
+        return True
+
+    @staticmethod
+    def has_module_perms(app_label):
+        return True
 
     @property
     def is_staff(self):

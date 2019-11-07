@@ -1,0 +1,86 @@
+[
+{
+    "model": "products.product",
+    "pk": 1,
+    "fields": {
+        "title": "Hoodie",
+        "slug": "hoodie",
+        "description": "Adidas Original",
+        "price": "130.99",
+        "image": "products/1571138134_17768228977668941/1571138134_17768228977668941.jpg",
+        "featured": false,
+        "active": true,
+        "timestamp": "2019-03-04T07:38:08.148Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 2,
+    "fields": {
+        "title": "Black Shoe",
+        "slug": "black-shoe",
+        "description": "Awesome pair of shoes",
+        "price": "24.99",
+        "image": "products/1571137705_7867891015992060/1571137705_7867891015992060.jpg",
+        "featured": false,
+        "active": true,
+        "timestamp": "2019-03-04T07:38:08.148Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 3,
+    "fields": {
+        "title": "Gaming Computer",
+        "slug": "gamingpc",
+        "description": "Ultimate Gaming PC",
+        "price": "3999.99",
+        "image": "products/1571137788_39822742325163915/1571137788_39822742325163915.jpg",
+        "featured": true,
+        "active": true,
+        "timestamp": "2019-03-04T07:38:08.148Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 4,
+    "fields": {
+        "title": "Jeans",
+        "slug": "jeans",
+        "description": "Premium quality fabric",
+        "price": "12.99",
+        "image": "products/1571137943_3797013584176040/1571137943_3797013584176040.jpg",
+        "featured": false,
+        "active": true,
+        "timestamp": "2019-03-04T07:38:08.148Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 5,
+    "fields": {
+        "title": "T-Shirt",
+        "slug": "t-shirt-cfel",
+        "description": "Comfortable T-shirt",
+        "price": "13.99",
+        "image": "products/1571138229_18437518106104565/1571138229_18437518106104565.jpg",
+        "featured": false,
+        "active": true,
+        "timestamp": "2019-03-04T07:38:08.148Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 6,
+    "fields": {
+        "title": "Mobile Phone",
+        "slug": "phone",
+        "description": "4GB RAM, Snapdragon 655",
+        "price": "489.99",
+        "image": "products/1571138277_33207391866327478/1571138277_33207391866327478.jpg",
+        "featured": false,
+        "active": true,
+        "timestamp": "2019-10-15T11:17:57.976Z"
+    }
+}
+]
