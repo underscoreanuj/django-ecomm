@@ -5,6 +5,8 @@ from django.views.generic import ListView, DetailView
 from .models import Product
 from carts.models import Cart
 
+from analytics.mixins import ObjectViewedMixin
+
 # Create your views here.
 
 class ProductFeaturedListView(ListView):
@@ -15,7 +17,8 @@ class ProductFeaturedListView(ListView):
         request = self.request
         return Product.objects.all().featured()
 
-class ProductFeaturedDetailView(DetailView):
+
+class ProductFeaturedDetailView(ObjectViewedMixin, DetailView):
     # queryset = Product.objects.all()
     template_name = "products/featured_product_detail.html"
 
@@ -48,9 +51,11 @@ def product_list_view(request):
     }
     return render(request, "products/product_list.html", context)
 
-class ProductDetailView(DetailView):
+
+class ProductDetailView(ObjectViewedMixin, DetailView):
     # queryset = Product.objects.all()
     template_name = "products/product_detail.html"
+
     def get_context_data(self, *args, **kwargs):
         context = super(ProductDetailView, self).get_context_data(*args, **kwargs)
         # print(context)
@@ -107,7 +112,7 @@ def product_detail_view(request, pk=None, *args, **kwargs):
     return render(request, "products/product_detail.html", context)
  
 
-class ProductDetailSlugView(DetailView):
+class ProductDetailSlugView(ObjectViewedMixin, DetailView):
     queryset = Product.objects.all()
     template_name = "products/product_detail.html"
 
@@ -128,7 +133,9 @@ class ProductDetailSlugView(DetailView):
         except Product.MultipleObjectsReturned:
             qs = Product.objects.filter(slug=slug, active=True)
             instance = qs.first()
-        except:
+        except Exception as e:
             raise Http404("Nothing Found hmmmmm!")
-        
+
+        # object_viewed_signal.send(instance.__class__, instance=instance, request=request)
+
         return instance
