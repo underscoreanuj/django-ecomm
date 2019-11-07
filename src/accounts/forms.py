@@ -41,7 +41,7 @@ class UserAdminChangeForm(forms.ModelForm):
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label='Email')
+    email    = forms.CharField(label='Email')
     password = forms.CharField(
         widget=forms.PasswordInput()
     )
@@ -66,7 +66,7 @@ class RegisterForm(forms.ModelForm):
     def save(self, commit=True):
         user = super(RegisterForm, self).save(commit=False)
         user.set_password(self.cleaned_data['password1'])
-        user.active = False     # send confirmation email
+        # user.active = False     # send confirmation email
         if commit:
             user.save()
         return user
