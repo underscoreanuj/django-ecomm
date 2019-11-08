@@ -14,6 +14,10 @@ from accounts.signals import user_logged_in_signal
 User = settings.AUTH_USER_MODEL
 
 
+FORCE_SESSION_TO_ONE = getattr(settings, 'FORCE_SESSION_TO_ONE', False)
+FORCE_INACTIVE_USER_END_SESSION = getattr(settings, 'FORCE_INACTIVE_USER_END_SESSION', False)
+
+
 class ObjectViewed(models.Model):
     user            = models.ForeignKey(User, blank=True, null=True)        # User instance
     ip_address      = models.CharField(max_length=220, blank=True, null=True)
@@ -39,6 +43,34 @@ class UserSession(models.Model):
     active          = models.BooleanField(default=True)
     ended           = models.BooleanField(default=False)
 
+    def end_session(self):
+        try:
+            Session.objects.get(pk=self.session_key).delete()
+            self.active = False
+            self.ended = True
+            self.save()
+        except Exception as e:
+            pass
+
+        return self.ended
+
+
+def post_save_session_receiver(sender, instance, created, *args, **kwargs):
+    if created:
+        qs = UserSession.objects.filter(user=instance.user).exclude(id=instance.id)
+        for i in qs:
+            i.end_session()
+    if not instance.active and not instance.ended:
+        instance.end_session()
+
+
+def post_save_user_changed_receiver(sender, instance, created, *args, **kwargs):
+    if not created:
+        if not instance.is_active:
+            qs = UserSession.objects.filter(user=instance.user).exclude(id=instance.id)
+            for i in qs:
+                i.end_session()
+
 
 def object_viewed_receiver(sender, instance, request, *args, **kwargs):
     new_view_obj = ObjectViewed.objects.create(
@@ -50,8 +82,17 @@ def object_viewed_receiver(sender, instance, request, *args, **kwargs):
 
 
 def user_logged_in_receiver(sender, instance, request, *args, **kwargs):
-    print(instance)
+    new_user_session_obj = UserSession.objects.create(
+        user=instance,
+        ip_address=get_client_ip(request),
+        session_key=request.session.session_key
+    )
 
 
 object_viewed_signal.connect(object_viewed_receiver)
 user_logged_in_signal.connect(user_logged_in_receiver)
+
+if FORCE_SESSION_TO_ONE:
+    post_save.connect(post_save_session_receiver, sender=UserSession)
+if FORCE_INACTIVE_USER_END_SESSION:
+    post_save.connect(post_save_user_changed_receiver, sender=User)
